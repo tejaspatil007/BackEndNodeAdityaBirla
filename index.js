@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4');
 const cors = require('cors');
 
 var app = express();
-
+console.log('tejas');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
