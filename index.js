@@ -5,7 +5,7 @@ const uuidv4 = require('uuid/v4');
 const cors = require('cors');
 
 var app = express();
-console.log('tejas');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -189,16 +189,16 @@ app.get("/getgoals",function(req,res){
 app.post("/usergoals",function(req,res){
     console.log(req.body);
     let userid = req.body.user_id;
-    // console.log(userid);
+    console.log(userid);
     let user_goal = req.body.selectedgoals;
-    // console.log(user_goal);
+    console.log(user_goal);
     let sqldata = [];
-    for(let i = 0; i< 4; i++){
-        let add = [user_goal[i].goal,user_goal[i].goal_id,userid];
-        // console.log("=",add);
+    for(let i = 0; i< 3; i++){
+        let add = [user_goal[i].goal,user_goal[i].goalId,userid];
+        console.log("=",add);
         sqldata.push(add);
     }
-    // console.log("=>",sqldata);
+    console.log("=>",sqldata);
     connection.query("INSERT INTO usergoalstable(goals,goal_id,user_id) VALUES ?",[sqldata],function(error,rows,field){
         if(error){
             throw(error);
