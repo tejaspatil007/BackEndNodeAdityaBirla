@@ -66,7 +66,7 @@ let goals = `CREATE TABLE IF NOT EXISTS goaltbl(
 
 ///////// user goals tables//////
 let usergoals = `CREATE TABLE IF NOT EXISTS usergoalstable(
-    usergoal_id int(11) PRIMARY KEY,
+    usergoal_id int(11) PRIMARY KEY AUTO_INCREMENT,
     goals varchar(50) NOT NULL,
     goal_id int(11),
     user_id varchar(50),
@@ -87,12 +87,12 @@ let answersgoal = `CREATE TABLE IF NOT EXISTS anstable(
     ans_id int(11) PRIMARY KEY AUTO_INCREMENT,
     user_id varchar(50) ,
     goal_id int(11) ,
-    answer1 int(11) NOT NULL,
-    answer2 int(11) NOT NULL,
-    answer3 int(11) NOT NULL,
-    answer4 int(11) NOT NULL,
-    answer5 int(11) NOT NULL,
-    answer6 int(11) NOT NULL,
+    answer1 int(11) ,
+    answer2 int(11) ,
+    answer3 int(11) ,
+    answer4 int(11) ,
+    answer5 int(11) ,
+    answer6 int(11) ,
     FOREIGN KEY(user_id) REFERENCES usertable(user_id),
     FOREIGN KEY(goal_id) REFERENCES goaltbl(goal_id)
     )`
@@ -112,7 +112,7 @@ app.post("/details",function(req,res){
     console.log(req.body);
     let uid = uuidv4();
     let obj = [
-        uuidv4(),
+        uid,
         req.body.name,
         req.body.gender,
         req.body.age,
@@ -205,8 +205,8 @@ app.post("/usergoals",function(req,res){
         }
         else{
             // console.log({userid:uid});
-            // console.log(rows);
-            res.send({userid:uid});
+            console.log(rows);
+            // res.send({rows});
         }
             connection.end();
         })
@@ -214,13 +214,13 @@ app.post("/usergoals",function(req,res){
 ////////// strore user goals //////////////////////
 
 ///////////// get user goals filter by uuid /////////////////////
-app.get("/getusergoal/:id",function(req,res){
+app.get("/getusergoal",function(req,res){
     // console.log(req.params.id);
-    let urid = req.params.id;
-    connection.query(`SELECT * FROM usergoalstable WHERE user_id = ?`,[urid],function(err,rows){
+    // let urid = req.params.id;
+    connection.query(`SELECT usertable.user_id, usertable.name, usertable.age, usergoalstable.goal_id, usergoalstable.goals, usergoalstable.user_id FROM usertable,usergoalstable WHERE usertable.user_id = usergoalstable.user_id`,function(err,rows){
         if(err){
             throw(err);
-        }
+        } 
         else{
             res.send(rows);
         }
