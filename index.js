@@ -42,6 +42,7 @@ let userdetails = `CREATE TABLE IF NOT EXISTS usertable(
     connection.query(userdetails, function(err, results, fields) {
         if (err) {
             console.log(err);
+            
         }
         else{
          console.log("1st table created");   
