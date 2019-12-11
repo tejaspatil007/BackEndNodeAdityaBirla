@@ -214,10 +214,11 @@ app.post("/usergoals",function(req,res){
 ////////// strore user goals //////////////////////
 
 ///////////// get user goals filter by uuid /////////////////////
-app.get("/getusergoal",function(req,res){
+app.get("/getusergoal/:id",function(req,res){
     // console.log(req.params.id);
     // let urid = req.params.id;
-    connection.query(`SELECT usertable.user_id, usertable.name, usertable.age, usergoalstable.goal_id, usergoalstable.goals, usergoalstable.user_id FROM usertable,usergoalstable WHERE usertable.user_id = usergoalstable.user_id`,function(err,rows){
+    let urid = req.params.id;
+    connection.query(`SELECT usertable.user_id, usertable.name, usertable.age, usergoalstable.goal_id, usergoalstable.goals, usergoalstable.user_id FROM usertable,usergoalstable ON usertable.user_id = usergoalstable.user_id WHEN user_id = ?`,[urid],function(err,rows){
         if(err){
             throw(err);
         } 
