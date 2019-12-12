@@ -51,7 +51,7 @@ let userdetails = `CREATE TABLE IF NOT EXISTS usertable(
 
 //////goals table/////////
 let goals = `CREATE TABLE IF NOT EXISTS goaltbl(
-    goal_id int(11) PRIMARY KEY ,
+    goal_id int(11) PRIMARY KEY AUTO_INCREMENT,
     goals varchar(30) NOT NULL
 )`
 
@@ -86,13 +86,13 @@ connection.query(usergoals, function(err,results, fields){
 let answersgoal = `CREATE TABLE IF NOT EXISTS anstable(
     ans_id int(11) PRIMARY KEY AUTO_INCREMENT,
     user_id varchar(50) ,
-    goal_id int(11) ,
-    answer1 int(11) ,
-    answer2 int(11) ,
-    answer3 int(11) ,
-    answer4 int(11) ,
-    answer5 int(11) ,
-    answer6 int(11) ,
+    goal_id varchar(50) ,
+    answer1 varchar(50) ,
+    answer2 varchar(50) ,
+    answer3 varchar(50) ,
+    answer4 varchar(50) ,
+    answer5 varchar(50) ,
+    answer6 varchar(50) ,
     FOREIGN KEY(user_id) REFERENCES usertable(user_id),
     FOREIGN KEY(goal_id) REFERENCES goaltbl(goal_id)
     )`
@@ -156,32 +156,32 @@ app.get("/getgoals",function(req,res){
 ///////// get goals ////////////////////
 
 ////////// strore goals ///////////////
-    // let ugoal = [
-    //     [1,"Retirement"],
-    //     [2,"Holiday"],
-    //     [3,"Honeymoon"],
-    //     [4,"Marriage"],
-    //     [5,"Car"],
-    //     [6,"Bike"],
-    //     [7,"Luxury Car"],
-    //     [8,"Starting Business"],
-    //     [9,"Self Development"],
-    //     [10,"Child’s Education"],
-    //     [11,"Child’s Marriage"],
-    //     [12,"World Tour"],
-    //     [13,"Wealth Creation"],
-    //     [14,"Follow Passion"],
-    //     [15,"Philanthropy"],
-    // ]
-    // connection.query("INSERT INTO goaltbl(goal_id,goals) Values ?",[ugoal],function(error,rows,field){
-    //     if(error){
-            // throw(error);
-    //     }
-    //     else{
-    //         // res.send(rows);
-    //         console.log(rows);
-    //     }
-    // })
+    let ugoal = [
+        [1,"Retirement"],
+        [2,"Holiday"],
+        [3,"Honeymoon"],
+        [4,"Marriage"],
+        [5,"Car"],
+        [6,"Bike"],
+        [7,"Luxury Car"],
+        [8,"Starting Business"],
+        [9,"Self Development"],
+        [10,"Child’s Education"],
+        [11,"Child’s Marriage"],
+        [12,"World Tour"],
+        [13,"Wealth Creation"],
+        [14,"Follow Passion"],
+        [15,"Philanthropy"],
+    ]
+    connection.query("INSERT IGNORE INTO goaltbl(goal_id,goals) Values ?",[ugoal],function(error,rows,field){
+        if(error){
+            throw(error);
+        }
+        else{
+            // res.send(rows);
+            console.log(rows);
+        }
+    })
 
 ////////// strore goals ///////////////
 
@@ -218,7 +218,7 @@ app.get("/getusergoal/:id",function(req,res){
     // console.log(req.params.id);
     // let urid = req.params.id;
     let urid = req.params.id;
-    connection.query(`SELECT usertable.user_id, usertable.name, usertable.age, usergoalstable.goal_id, usergoalstable.goals, usergoalstable.user_id FROM usertable,usergoalstable ON usertable.user_id = usergoalstable.user_id WHEN user_id = ?`,[urid],function(err,rows){
+    connection.query(`SELECT usertable.user_id, usertable.name, usertable.age, usergoalstable.goal_id, usergoalstable.goals, usergoalstable.user_id FROM usertable,usergoalstable ON (usertable.user_id = usergoalstable.user_id AND user_id = ?)`,[urid],function(err,rows){
         if(err){
             throw(err);
         } 
